@@ -1,0 +1,275 @@
+﻿
+@{
+    ViewBag.Title = "Георгий Крупин";
+}
+
+@model WebPhotographerKrupin.Models.IndexViewModel
+@using WebPhotographerKrupin.Helpers
+
+
+    @* Интро *@
+    <section class="intro @*clearfix*@">
+        <div class="span1 cb">
+            <div class="container body-content">
+                <div class="intro__name">
+                    <p>Фотограф в <span>Туле</span></p>
+                    <h1>Георгий<br>Крупин</h1>
+                </div>
+
+                    <button class="send__request" data-toggle="modal" data-target="#myModal">Отправить заявку</button>
+                        
+                </div>
+            </div>
+
+                <div class="span1 shadow cb">
+                    <div class="container body-content">
+                        <div class="menu">
+                            <p><a href="#work">Портфолио</a></p>
+                            <p><a href="#about">Обо мне</a></p>
+                            <p><a href="#contakt">Контакты</a></p>
+                            <p><a href="#respons">Отзывы</a></p>
+                            <div class="icons_contact">
+
+                                <img alt="" src="~/Content/Images/icons/skype-white.png">
+                                <a href="https://vk.com/fotograf_tula_georgikrupin">
+                                    <img alt="" src="~/Content/Images/icons/vk-white.png">
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</section>
+
+    @* Портфолио *@
+    <section class="portfolio clearfix">
+
+        <div class="span1 @*pf*@">
+            <a name="work"></a>
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-4"></div>
+                    <div class="col-xs-12 col-sm-12 col-lg-8">
+                        <p class="headStyle">Портфолио</p>
+                        <img alt="" id="main" src=@Url.Action("ReturnImage", "Home", new { path = Model.Photos.ElementAt(0).PhotoUrl })>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span1 dark_side @*pf*@">
+            <div class="container">
+
+                <div class="row">
+                    <div class="variant">
+                        @{
+                            int k = (int)Model.PageInfo.PhotoGroup;
+                            object s1 = (k == 1) ? "activevariant" : "notactive";
+                            object s2 = (k == 2) ? "activevariant" : "notactive";
+                        }
+                        <p class=@s1>@Html.ActionLink("Природа", "Index", new { path  = 1, group = 1 })</p>
+                        <p class=@s2>@Html.ActionLink("Портрет", "Index", new { path = 1, group = 2 })</p>
+                        
+                    </div>
+                </div>
+                  
+                   
+                    @for (int i = 0; i < Model.PageInfo.PageSize/2; i++) {
+                        <div class="row">
+                        
+                            @if (i * 2 < Model.Photos.Count())
+                            {
+                            <div class="col-xs-6 col-sm-6 col-lg-4"  >
+
+                               <img alt="" src="@Url.Action("ReturnImage", "Home", new { path = Model.Photos.ElementAt(i * 2).PhotoUrl, group = Model.PageInfo.PhotoGroup })" onclick="mainphoto(this)">
+
+                            </div>
+                            } else
+                            {
+                                <div class="col-xs-6 col-sm-6 col-lg-4">
+
+                                    <img alt = "" src="~/Content/Images/portfolio/bg.jpg" onclick="mainphoto(this)">
+                                </div>
+                            }
+                            @if (i * 2 + 1 < Model.Photos.Count())
+                            {
+                                <div class="col-xs-6 col-sm-6 col-lg-4">
+
+                                    <img alt="" src="@Url.Action("ReturnImage", "Home", new { path = Model.Photos.ElementAt(i * 2 + 1).PhotoUrl, group = Model.PageInfo.PhotoGroup })" onclick="mainphoto(this)">
+                                </div>
+                            } else
+                            {
+                                <div class="col-xs-6 col-sm-6 col-lg-4">
+
+                                    <img alt="" src="~/Content/Images/portfolio/bg.jpg" onclick="mainphoto(this)">
+                                </div>
+                            }
+                            
+                        </div>
+                           
+                    }
+
+                        <div class="row">
+                            
+                            <ul class="pager">
+                                <li class="btn-prev">@Html.PageLinkPrev(Model.PageInfo, x => Url.Action("Index", new { page = x, group = (int)Model.PageInfo.PhotoGroup}))</li>
+                                <li class="btn-next">@Html.PageLinksNext(Model.PageInfo, x => Url.Action("Index", new { page = x, group = (int)Model.PageInfo.PhotoGroup }))</li>
+                            </ul>
+                        </div>
+               </div>
+        </div>
+
+    </section>
+
+    @* Обо мне *@
+    <section class="about_me clearfix">
+        <a name="about"></a>
+        <div class="pack">
+
+            <div class="span3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6"></div>
+                        <div class="col-lg-6">
+
+                            <p class="headStyle">Обо мне</p>
+                            <div @*class="about_banner"*@>
+                                <img src="~/Content/Images/blocks/about.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="span2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-8" id="about_text_box">
+                            <div class="about__description">
+                                <p>
+                                    Я фотограф и вообще просто позитивный и разносторонний человек.<br><br />
+                                    Люблю читать, гулять, слушать хорошую музыку и футбол (ну а куда без него?)))
+                                    Делаю потреты ну и люблю фотографирвать природу.
+                                    <br /><br />Фотографирую достаточно давно, поэтому имею определённый опыт. Но даже имея это-я всегда учусь и стараюсь развиваться и совершенствоваться.
+                                    Фотографировать предпочитаю на природе.
+                                    <br /><br />Надеюсь вам будет интересно сотрудничество со мной.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    @* Контакты *@
+    <section>
+
+        <a name="contakt"></a>
+
+        <div class="span1 form_contact">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-8 contact">
+                        <p class="headStyle" id="contact_header">Контакты</p>
+                        <p class="contact_refer">8 (920) 749 04 83</p>
+                        <p class="contact_refer">KrupinGV@mail.ru</p>
+                        <div class="icons_contact">
+                            <img alt="" src="~/Content/Images/icons/skype-dark.png" >
+                            <a href="https://vk.com/fotograf_tula_georgikrupin"> 
+                                <img alt="" src="~/Content/Images/icons/vk-dark.png" htef="">
+                            </a>
+
+</div>
+                        <br>
+                        <button class="send__request" data-toggle="modal" data-target="#myModal">Отправить заявку</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div alt="" class="span1 phone"> </div>
+
+    </section>
+
+    @* Связаться *@
+
+    <section class="clearfix">
+        <a name="respons"></a>
+        <div class="pack">
+            <div class="span1 dark_side">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-8">
+                            <div class="response_title">
+                                <p>
+                                    Отличный фотограф!!! Понравился как процесс работы, так и обработанные фотографии)
+                                    <br />
+                                    <span>Анна Калинина</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="span1">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <p class="headStyle">Отзывы</p>
+                            <img alt="" src="~/Content/Images/7.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div id="myModal" class="modal fade modal-teg" tabindex="-1" role="dialog">
+    <div class="call_me">
+        
+        <button class="close" type="button" data-dismiss="modal" id="bt-close">×</button>
+        @using (Html.BeginForm("SendMessage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+            <div class="container">
+                <h1>ЗАЯВКА</h1>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <input name="Name" class="text validate" placeholder="Имя" />
+                    </div>
+                    <div class="col-lg-4">
+                        <input name="Phone" class="text validate" placeholder="Телефон" />
+                    </div>
+                    <div class="col-lg-4">
+                        <input name="email" class="text validate" placeholder="Электронная почта" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <input name="message" class="text message validate" placeholder="Сообщение" />
+                        </div>
+                    </div>
+                
+                        <input class="submit send__request" type="submit" value="Отправить" />
+                    </div>
+                    }
+                </div>
+
+          
+    </div>
+
+
+    <script LANGUAGE="JavaScript">
+        function mainphoto(obj) {
+
+            var img = document.getElementById("main");
+
+            img.setAttribute("src", obj.src);
+        }
+    </script>
+
+
